@@ -3,6 +3,7 @@ package animals;
 import field.Cell;
 import field.InitialField;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -16,6 +17,10 @@ public abstract class Animal {
     public abstract Cell getPosition();
 
     public abstract int getEnergyCapacity();
+
+    public abstract boolean getBreedableStatus();
+
+    public abstract void setBreedableStatus(boolean status);
 
     public abstract void setEnergyCapacity(int energyCapacity);
 
@@ -123,8 +128,8 @@ public abstract class Animal {
     }
 
     private void swallow(Animal actualAnimal) {
-        int actualEnergyifEaten = actualAnimal.getGivenEnergyIfEaten();
-        int newEnergy = this.getEnergyCapacity() + actualEnergyifEaten;
+        int actualEnergyEaten = actualAnimal.getGivenEnergyIfEaten();
+        int newEnergy = this.getEnergyCapacity() + actualEnergyEaten;
         int maxEnergy = initialField.getDataFromTXT(actualAnimal.toString(), 3);
         if (newEnergy > maxEnergy) {
             setEnergyCapacity(maxEnergy);
@@ -140,8 +145,7 @@ public abstract class Animal {
                     if (calculateChance(Integer.parseInt(eatableAnimal.getValue().toString()))) {
                         swallow(this);
                         //System.out.println("Animal " + getIcon() + " has ate " + actualAnimal.getIcon());
-                        if (actualAnimal instanceof Grass) {
-                        } else {
+                        if (!actualAnimal.getClass().equals(Grass.class)) {
                             initialField.addEatenAnimals(actualAnimal);
                             Cell findPosition = actualAnimal.getPosition();
                             findPosition.removeAnimal(actualAnimal);
@@ -159,7 +163,7 @@ public abstract class Animal {
     public void growGrass(Cell position) {
         boolean findGrass = false;
         for (Animal animal : position.getAnimalList()) {
-            if (animal instanceof Grass) {
+            if (animal.getClass().equals(Grass.class)) {
                 findGrass = true;
                 setEnergyToGrass(animal.getPosition(), animal);
                 break;
@@ -179,11 +183,7 @@ public abstract class Animal {
     private boolean calculateChance(int probability) {
         Random random = new Random();
         int randomChance = random.nextInt(100);
-        if (randomChance < probability) {
-            return true;
-        } else {
-            return false;
-        }
+        return randomChance < probability;
 
     }
 
@@ -201,7 +201,38 @@ public abstract class Animal {
         Animal newAnimal = getNewAnimal(initialField);
         position.addAnimal(newAnimal);
         newAnimal.setPosition(position);
+        newAnimal.setBreedableStatus(false);
         return newAnimal;
+    }
+
+    public List<Animal> breedingProcess(boolean chanceToAppear, int maxEnergy) {
+        List<Animal> breedList = new ArrayList<>();
+        for (Animal animal : getPosition().getAnimalList()) {
+            if (this.getClass().equals(animal.getClass()) &&
+                    (!this.equals(animal)) &&
+                    (this.getBreedableStatus()) &&
+                    (animal.getBreedableStatus()) &&
+                    chanceToAppear &&
+                    checkEnergy(animal, this, maxEnergy)) {
+                breedList.add(animal);
+                this.setBreedableStatus(false);
+                animal.setBreedableStatus(false);
+            }
+        }
+
+        breedList.forEach(animal -> {
+            animal.breed(animal.getPosition());
+        });
+        return breedList;
+    }
+
+    private boolean checkEnergy(Animal maleAnimal, Animal femaleAnimal, int maxEnergy) {
+        int middleEnergy = (maxEnergy / 2);
+        if ((maleAnimal.getEnergyCapacity() > middleEnergy) && (femaleAnimal.getEnergyCapacity() > middleEnergy)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

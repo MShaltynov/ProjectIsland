@@ -5,6 +5,9 @@ import field.InitialField;
 import field.Island;
 import render.GameRender;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameEngine {
     private int delay;
     private GameRender gameRender;
@@ -21,6 +24,9 @@ public class GameEngine {
 
     public void start() {
         initialField.populateIsland(island);
+        System.out.println("===============================================================================");
+        System.out.println("Initial map. Animal amount= " + gameRender.getTotalAmount(island));
+        gameRender.printMap(island);
         while (island.getAllAnimals().stream().count() > 0) {
             try {
                 long startTime = System.currentTimeMillis();
@@ -40,21 +46,28 @@ public class GameEngine {
 
     private void nextDay() {
         long startTime = System.currentTimeMillis();
+        List<Animal> newAnimals = new ArrayList<>();
         for (Animal currentAnimal : island.getAllAnimals()
         ) {
             currentAnimal.move(initialField.getSpeedFromString(currentAnimal));
             currentAnimal.eat();
             currentAnimal.checkEnergy();
+            int maxEnergy = initialField.getDataFromTXT(currentAnimal.toString(), 3);
+            boolean chanceToAppear = initialField.calculateChanceToEmerge(initialField.getDataFromTXT(currentAnimal.toString(), 1));
+            newAnimals.addAll(currentAnimal.breedingProcess(chanceToAppear, maxEnergy));
         }
-        System.out.println("Moving and eating time: "+(System.currentTimeMillis()-startTime) +"ms");
+        System.out.print("\uD83D\uDC76New animals: ");
+        System.out.print(newAnimals.size() + "pcs: ");
+        newAnimals.forEach(animal -> {
+            System.out.print(animal.getIcon());
+        });
+        System.out.println("\nMoving and eating time: " + (System.currentTimeMillis() - startTime) + "ms");
 
         initialField.printEatenAnimals();
-        startTime = System.currentTimeMillis();
-        initialField.breed();
-        System.out.println("Breed time: "+(System.currentTimeMillis()-startTime) +"ms");
+        //initialField.breed();
         startTime = System.currentTimeMillis();
         initialField.consumeEnergy();
-        System.out.println("Set energy after day time: "+(System.currentTimeMillis()-startTime) +"ms");
+        System.out.println("Set energy after day time: " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
 

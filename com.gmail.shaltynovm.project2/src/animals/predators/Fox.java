@@ -14,6 +14,17 @@ public class Fox extends Predators {
         this.energyCapacity = energyCapacity;
         this.givenEnergyIfEaten = givenEnergyIfEaten;
     }
+    private boolean breedableStatus = true;
+
+    @Override
+    public boolean getBreedableStatus() {
+        return breedableStatus;
+    }
+
+    @Override
+    public void setBreedableStatus(boolean breedableStatus) {
+        this.breedableStatus = breedableStatus;
+    }
     @Override
     public Animal getNewAnimal(InitialField initialField) {
         return new Fox(initialField,5,5);

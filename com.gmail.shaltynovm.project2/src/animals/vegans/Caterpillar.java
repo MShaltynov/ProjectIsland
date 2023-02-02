@@ -25,7 +25,17 @@ public class Caterpillar extends Vegans {
         return givenEnergyIfEaten;
     }
     private int energyCapacity;
+    private boolean breedableStatus = true;
 
+    @Override
+    public boolean getBreedableStatus() {
+        return breedableStatus;
+    }
+
+    @Override
+    public void setBreedableStatus(boolean breedableStatus) {
+        this.breedableStatus = breedableStatus;
+    }
     public void setEnergyCapacity(int energyCapacity) {
         this.energyCapacity = energyCapacity;
     }

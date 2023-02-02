@@ -23,6 +23,7 @@ public class Bear extends Predators {
     private int energyCapacity;
     private int givenEnergyIfEaten;
 
+
     public int getGivenEnergyIfEaten() {
         return givenEnergyIfEaten;
     }
@@ -33,6 +34,17 @@ public class Bear extends Predators {
 
     public int getEnergyCapacity() {
         return energyCapacity;
+    }
+    private boolean breedableStatus = true;
+
+    @Override
+    public boolean getBreedableStatus() {
+        return breedableStatus;
+    }
+
+    @Override
+    public void setBreedableStatus(boolean breedableStatus) {
+        this.breedableStatus = breedableStatus;
     }
 
     private Cell position;

@@ -3,11 +3,18 @@ import field.Cell;
 import field.InitialField;
 import java.util.Map;
 
-public class Predators extends Animal{
+public abstract class Predators extends Animal{
     private Cell position;
     public int getEnergyCapacity() {
         return 0;
     }
+
+    @Override
+    public abstract boolean getBreedableStatus();
+
+    @Override
+    public abstract void setBreedableStatus(boolean status);
+
     private int energyCapacity;
     public void setEnergyCapacity(int energyCapacity) {
         this.energyCapacity = energyCapacity;
@@ -22,9 +29,7 @@ public class Predators extends Animal{
     }
 
     @Override
-    public Animal getNewAnimal(InitialField initialField) {
-        return null;
-    }
+    public abstract Animal getNewAnimal(InitialField initialField);
 
     @Override
     public Cell getPosition() {

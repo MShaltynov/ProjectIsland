@@ -5,7 +5,7 @@ import field.InitialField;
 
 import java.util.Map;
 
-public class Vegans extends Animal {
+public abstract class Vegans extends Animal {
     private int energyCapacity;
     public void setEnergyCapacity(int energyCapacity) {
         this.energyCapacity = energyCapacity;
@@ -15,14 +15,18 @@ public class Vegans extends Animal {
     }
 
     @Override
+    public abstract boolean getBreedableStatus();
+
+    @Override
+    public  abstract void setBreedableStatus(boolean status);
+
+    @Override
     public int getGivenEnergyIfEaten() {
         return 0;
     }
 
     @Override
-    public Animal getNewAnimal(InitialField initialField) {
-        return null;
-    }
+    public abstract Animal getNewAnimal(InitialField initialField);
 
     private Cell position;
 
@@ -44,4 +48,5 @@ public class Vegans extends Animal {
     public Map<String, Integer> getChanceToEatList() {
         return null;
     }
+
 }

@@ -2,7 +2,6 @@ package animals.vegans;
 
 import animals.Animal;
 import animals.Vegans;
-import animals.predators.Bear;
 import field.Cell;
 import field.InitialField;
 
@@ -33,7 +32,17 @@ public class Duck extends Vegans {
     public int getEnergyCapacity() {
         return energyCapacity;
     }
+    private boolean breedableStatus = true;
 
+    @Override
+    public boolean getBreedableStatus() {
+        return breedableStatus;
+    }
+
+    @Override
+    public void setBreedableStatus(boolean breedableStatus) {
+        this.breedableStatus = breedableStatus;
+    }
     private Cell position;
     private Map<String,Integer> chanceToEat=new HashMap<>(){{
         put("caterpillar",90);

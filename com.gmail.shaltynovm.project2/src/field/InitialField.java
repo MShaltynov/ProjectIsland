@@ -126,7 +126,7 @@ public class InitialField {
         int returnNumber = 0;
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("Island/src/resources/animalBase.txt"));
+            br = new BufferedReader(new FileReader("com.gmail.shaltynovm.project2/src/resources/animalBase.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -178,7 +178,7 @@ public class InitialField {
         return mapFromTXT;
     }
 
-    private boolean calculateChanceToEmerge(int chancePercentage) {
+    public boolean calculateChanceToEmerge(int chancePercentage) {
         Random random = new Random();
         int randomChance = random.nextInt(100);
         if (randomChance < chancePercentage) {
@@ -233,6 +233,7 @@ public class InitialField {
     }
 
     public void consumeEnergy() {
+        int i = 0;
         Cell[][] cells = island.islandGrid;
         for (int x = 0; x < island.xDimension; x++) {
             for (int y = 0; y < island.yDimension; y++) {
@@ -240,6 +241,12 @@ public class InitialField {
                     animal.getEnergyCapacity();
                     int energyConsumption = getEnergyConsumptionFromTXT(animal);
                     animal.setEnergyCapacity(animal.getEnergyCapacity() - energyConsumption);
+                    if (i == 2) {
+                        animal.setBreedableStatus(true);
+                        i = 0;
+                    } else {
+                        i++;
+                    }
                 }
             }
         }
@@ -266,7 +273,7 @@ public class InitialField {
                     Animal animal = loveList.get(i);
                     for (Animal checkAnimal : loveList) {
                         boolean firstCondition = checkAnimal.getClass().equals(animal.getClass());
-                        boolean secondCondition = checkAnimal instanceof Grass;
+                        boolean secondCondition = checkAnimal.getClass().equals(Grass.class);
                         boolean thirdCondition = checkAnimal.equals(animal);
                         boolean forthCondition = isAlreadyBreed(newAnimals, animal);
                         boolean fifthCondition = calculateChanceToEmerge(getDataFromTXT(animal.toString(), 1));

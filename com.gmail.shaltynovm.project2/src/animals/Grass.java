@@ -28,6 +28,16 @@ public class Grass extends Animal {
     }
 
     @Override
+    public boolean getBreedableStatus() {
+        return false;
+    }
+
+    @Override
+    public void setBreedableStatus(boolean status) {
+
+    }
+
+    @Override
     public void setEnergyCapacity(int energyCapacity) {
         this.energyCapacity = energyCapacity;
     }

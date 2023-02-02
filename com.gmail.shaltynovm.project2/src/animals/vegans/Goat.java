@@ -20,7 +20,17 @@ public class Goat extends Vegans {
         return new Goat(initialField,5,5);
     }
     private int givenEnergyIfEaten;
+    private boolean breedableStatus = true;
 
+    @Override
+    public boolean getBreedableStatus() {
+        return breedableStatus;
+    }
+
+    @Override
+    public void setBreedableStatus(boolean breedableStatus) {
+        this.breedableStatus = breedableStatus;
+    }
     public int getGivenEnergyIfEaten() {
         return givenEnergyIfEaten;
     }
