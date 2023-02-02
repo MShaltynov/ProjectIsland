@@ -2,7 +2,6 @@ package animals.vegans;
 
 import animals.Animal;
 import animals.Vegans;
-import animals.predators.Bear;
 import field.Cell;
 import field.InitialField;
 

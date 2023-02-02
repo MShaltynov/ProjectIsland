@@ -8,7 +8,5 @@ public class Main {
         GameRender gameRender = new GameRender();
         GameEngine gameEngine = new GameEngine(0,island,gameRender);
         gameEngine.start();
-        //TODO stop condition
-
     }
 }
